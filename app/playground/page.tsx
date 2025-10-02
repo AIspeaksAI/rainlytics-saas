@@ -13,9 +13,8 @@ import { Play, Copy, MapPin, Calendar, Code } from "lucide-react"
 import { useState } from "react"
 
 export default function PlaygroundPage() {
-  const [latitude, setLatitude] = useState("40.7128")
-  const [longitude, setLongitude] = useState("-74.0060")
-  const [date, setDate] = useState("2024-01-15")
+  const [city, setCity] = useState("New York")
+  const [date, setDate] = useState("10/02/2025")
   const [response, setResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -24,23 +23,11 @@ export default function PlaygroundPage() {
     // Simulate API call
     setTimeout(() => {
       const mockResponse = {
-        location: {
-          latitude: Number.parseFloat(latitude),
-          longitude: Number.parseFloat(longitude),
-          city: "New York",
-          country: "United States",
-        },
+        city: city,
         date: date,
         rainfall: {
           amount_mm: 12.5,
           amount_inches: 0.49,
-          intensity: "moderate",
-          duration_hours: 3.2,
-        },
-        metadata: {
-          source: "NOAA Weather Station NYC001",
-          quality: "high",
-          timestamp: new Date().toISOString(),
         },
       }
       setResponse(JSON.stringify(mockResponse, null, 2))
@@ -52,8 +39,7 @@ export default function PlaygroundPage() {
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "latitude": ${latitude},
-    "longitude": ${longitude},
+    "city": "${city}",
     "date": "${date}"
   }'`
 
@@ -64,8 +50,7 @@ export default function PlaygroundPage() {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    latitude: ${latitude},
-    longitude: ${longitude},
+    city: '${city}',
     date: '${date}'
   })
 });
@@ -81,8 +66,7 @@ headers = {
     "Content-Type": "application/json"
 }
 data = {
-    "latitude": ${latitude},
-    "longitude": ${longitude},
+    "city": "${city}",
     "date": "${date}"
 }
 
@@ -118,33 +102,30 @@ print(response.json())`
                 <CardDescription>Enter the location and date to retrieve rainfall data.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="latitude">Latitude</Label>
-                    <Input
-                      id="latitude"
-                      value={latitude}
-                      onChange={(e) => setLatitude(e.target.value)}
-                      placeholder="40.7128"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="longitude">Longitude</Label>
-                    <Input
-                      id="longitude"
-                      value={longitude}
-                      onChange={(e) => setLongitude(e.target.value)}
-                      placeholder="-74.0060"
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="city" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    City
+                  </Label>
+                  <Input
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="New York"
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="date" className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    Date
+                    Date (MM/DD/YYYY)
                   </Label>
-                  <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                  <Input
+                    id="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    placeholder="10/02/2025"
+                  />
                 </div>
 
                 <Button onClick={handleTryAPI} disabled={isLoading} className="w-full" size="lg">
