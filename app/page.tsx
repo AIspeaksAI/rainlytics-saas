@@ -95,7 +95,7 @@ export default function HomePage() {
                 <MapPin className="h-10 w-10 text-primary mb-4" />
                 <CardTitle>Global Coverage</CardTitle>
                 <CardDescription>
-                  Worldwide rainfall data coverage with precise latitude/longitude coordinate support.
+                  Worldwide rainfall data coverage for any city with simple, intuitive city name lookup.
                 </CardDescription>
               </CardHeader>
             </Card>

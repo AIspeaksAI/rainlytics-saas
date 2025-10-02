@@ -94,13 +94,12 @@ export default function DocsPage() {
                   <div className="space-y-2">
                     <h4 className="font-medium">2. Make Your First Request</h4>
                     <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                      <code>{`curl -X GET "https://api.rainlytics.com/v1/rainfall" \\
+                      <code>{`curl -X POST "https://api.rainlytics.com/v1/rainfall" \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "latitude": 40.7128,
-    "longitude": -74.0060,
-    "date": "2024-01-15"
+    "city": "New York",
+    "date": "10/02/2025"
   }'`}</code>
                     </pre>
                   </div>
@@ -158,7 +157,7 @@ export default function DocsPage() {
                       <div className="space-y-4">
                         <div>
                           <Badge variant="secondary" className="mb-2">
-                            GET
+                            POST
                           </Badge>
                           <code className="text-sm bg-muted px-2 py-1 rounded ml-2">/v1/rainfall</code>
                         </div>
@@ -172,19 +171,14 @@ export default function DocsPage() {
                               <div className="font-medium">Description</div>
                             </div>
                             <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
-                              <div>latitude</div>
-                              <div>number</div>
-                              <div>Latitude coordinate (-90 to 90)</div>
-                            </div>
-                            <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
-                              <div>longitude</div>
-                              <div>number</div>
-                              <div>Longitude coordinate (-180 to 180)</div>
+                              <div>city</div>
+                              <div>string</div>
+                              <div>City name (e.g., "New York", "Chicago", "Boston")</div>
                             </div>
                             <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
                               <div>date</div>
                               <div>string</div>
-                              <div>Date in YYYY-MM-DD format</div>
+                              <div>Date in MM/DD/YYYY format (e.g., "10/02/2025")</div>
                             </div>
                           </div>
                         </div>
@@ -193,23 +187,11 @@ export default function DocsPage() {
                           <h4 className="font-medium">Response</h4>
                           <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
                             <code>{`{
-  "location": {
-    "latitude": 40.7128,
-    "longitude": -74.0060,
-    "city": "New York",
-    "country": "United States"
-  },
-  "date": "2024-01-15",
+  "city": "New York",
+  "date": "10/02/2025",
   "rainfall": {
     "amount_mm": 12.5,
-    "amount_inches": 0.49,
-    "intensity": "moderate",
-    "duration_hours": 3.2
-  },
-  "metadata": {
-    "source": "NOAA Weather Station NYC001",
-    "quality": "high",
-    "timestamp": "2024-01-16T10:30:00Z"
+    "amount_inches": 0.49
   }
 }`}</code>
                           </pre>
@@ -236,14 +218,12 @@ export default function DocsPage() {
                             <code>{`{
   "requests": [
     {
-      "latitude": 40.7128,
-      "longitude": -74.0060,
-      "date": "2024-01-15"
+      "city": "New York",
+      "date": "10/02/2025"
     },
     {
-      "latitude": 34.0522,
-      "longitude": -118.2437,
-      "date": "2024-01-15"
+      "city": "Chicago",
+      "date": "10/02/2025"
     }
   ]
 }`}</code>
@@ -293,11 +273,11 @@ export default function DocsPage() {
                     <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
                       <code>{`{
   "error": {
-    "code": "INVALID_COORDINATES",
-    "message": "Latitude must be between -90 and 90",
+    "code": "INVALID_CITY",
+    "message": "City name is required",
     "details": {
-      "parameter": "latitude",
-      "value": 91.5
+      "parameter": "city",
+      "value": ""
     }
   }
 }`}</code>

@@ -60,7 +60,25 @@ The app is configured with:
 
 ## Features
 
-- Historical rainfall data API
+- Historical rainfall data API with City and Date inputs
+- OAuth 2.0 authentication via Salesforce Connected Apps
 - Modern UI with Tailwind CSS
 - Responsive design
 - Dark mode support
+
+## API Authentication
+
+The Rainlytics API uses OAuth 2.0 for authentication. See [SALESFORCE_OAUTH_SETUP.md](./SALESFORCE_OAUTH_SETUP.md) for detailed setup instructions.
+
+### Quick Setup
+
+1. Copy `env.example` to `.env.local`:
+   ```bash
+   cp env.example .env.local
+   ```
+
+2. Follow the [Salesforce OAuth Setup Guide](./SALESFORCE_OAUTH_SETUP.md) to create a Connected App
+
+3. Update `.env.local` with your Salesforce credentials
+
+4. For production deployment to Heroku, configure the environment variables in Heroku Config Vars
