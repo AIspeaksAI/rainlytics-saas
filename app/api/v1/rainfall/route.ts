@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { verifyRequest } from "@/lib/auth/oauth"
 
 // List of valid cities (can be expanded)
 const VALID_CITIES = [
@@ -50,6 +51,21 @@ function generateRainfall() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Verify OAuth token
+    const tokenPayload = await verifyRequest(request)
+    if (!tokenPayload) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "UNAUTHORIZED",
+            message: "Valid OAuth token is required. Please authenticate using /api/auth/authorize",
+            details: {},
+          },
+        },
+        { status: 401 }
+      )
+    }
+
     // Get request body
     const body = await request.json().catch(() => null)
 
