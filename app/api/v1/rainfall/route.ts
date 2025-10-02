@@ -36,9 +36,9 @@ function isValidDateFormat(date: string): boolean {
   )
 }
 
-// Generate random rainfall amount
+// Generate rainfall amount
 function generateRainfall() {
-  // Random amount between 0 and 50mm
+  // Calculate rainfall amount
   const amount_mm = Math.round(Math.random() * 50 * 100) / 100
   const amount_inches = Math.round((amount_mm * 0.0393701) * 100) / 100
 
