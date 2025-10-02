@@ -20,22 +20,28 @@ export default function PlaygroundPage() {
 
   const handleTryAPI = async () => {
     setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      const mockResponse = {
-        city: city,
-        date: date,
-        rainfall: {
-          amount_mm: 12.5,
-          amount_inches: 0.49,
+    try {
+      const res = await fetch("/api/v1/rainfall", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }
-      setResponse(JSON.stringify(mockResponse, null, 2))
+        body: JSON.stringify({
+          city,
+          date,
+        }),
+      })
+
+      const data = await res.json()
+      setResponse(JSON.stringify(data, null, 2))
+    } catch (error) {
+      setResponse(JSON.stringify({ error: "Failed to fetch data" }, null, 2))
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
-  const curlExample = `curl -X GET "https://api.rainlytics.com/v1/rainfall" \\
+  const curlExample = `curl -X POST "https://api.rainlytics.com/v1/rainfall" \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -44,7 +50,7 @@ export default function PlaygroundPage() {
   }'`
 
   const jsExample = `const response = await fetch('https://api.rainlytics.com/v1/rainfall', {
-  method: 'GET',
+  method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
@@ -70,7 +76,7 @@ data = {
     "date": "${date}"
 }
 
-response = requests.get(url, headers=headers, json=data)
+response = requests.post(url, headers=headers, json=data)
 print(response.json())`
 
   return (

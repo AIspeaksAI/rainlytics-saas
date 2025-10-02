@@ -94,7 +94,7 @@ export default function DocsPage() {
                   <div className="space-y-2">
                     <h4 className="font-medium">2. Make Your First Request</h4>
                     <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                      <code>{`curl -X GET "https://api.rainlytics.com/v1/rainfall" \\
+                      <code>{`curl -X POST "https://api.rainlytics.com/v1/rainfall" \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -157,7 +157,7 @@ export default function DocsPage() {
                       <div className="space-y-4">
                         <div>
                           <Badge variant="secondary" className="mb-2">
-                            GET
+                            POST
                           </Badge>
                           <code className="text-sm bg-muted px-2 py-1 rounded ml-2">/v1/rainfall</code>
                         </div>
