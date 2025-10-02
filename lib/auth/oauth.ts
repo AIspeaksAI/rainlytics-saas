@@ -62,9 +62,9 @@ export async function verifyRequest(request: NextRequest): Promise<TokenPayload 
 }
 
 /**
- * Exchange Salesforce authorization code for access token
+ * Exchange Salesforce authorization code for access token with PKCE
  */
-export async function exchangeCodeForToken(code: string): Promise<{
+export async function exchangeCodeForToken(code: string, codeVerifier?: string): Promise<{
   access_token: string
   instance_url: string
   id: string
@@ -77,6 +77,11 @@ export async function exchangeCodeForToken(code: string): Promise<{
       client_secret: process.env.SALESFORCE_CLIENT_SECRET || "",
       redirect_uri: process.env.SALESFORCE_CALLBACK_URL || "",
     })
+
+    // Add PKCE parameters if provided
+    if (codeVerifier) {
+      params.append("code_verifier", codeVerifier)
+    }
 
     const response = await fetch("https://login.salesforce.com/services/oauth2/token", {
       method: "POST",

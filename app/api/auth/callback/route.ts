@@ -36,8 +36,22 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Exchange code for access token
-  const tokenData = await exchangeCodeForToken(code)
+  // Get code verifier from cookie
+  const codeVerifier = request.cookies.get('code_verifier')?.value
+  if (!codeVerifier) {
+    return NextResponse.json(
+      {
+        error: {
+          code: "MISSING_CODE_VERIFIER",
+          message: "Code verifier is missing. Please restart the OAuth flow.",
+        },
+      },
+      { status: 400 }
+    )
+  }
+
+  // Exchange code for access token with PKCE
+  const tokenData = await exchangeCodeForToken(code, codeVerifier)
 
   if (!tokenData) {
     return NextResponse.json(
@@ -64,11 +78,15 @@ export async function GET(request: NextRequest) {
     org_id,
   })
 
-  // Return the token
-  return NextResponse.json({
+  // Clear the code verifier cookie and return the token
+  const response = NextResponse.json({
     success: true,
     token: jwt,
     message: "Authentication successful. Use this token in the Authorization header as 'Bearer <token>'",
   })
+  
+  response.cookies.delete('code_verifier')
+
+  return response
 }
 
