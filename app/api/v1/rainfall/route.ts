@@ -1,25 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { verifyRequest } from "@/lib/auth/oauth"
 
-// List of valid cities (can be expanded)
-const VALID_CITIES = [
-  "New York",
-  "Chicago",
-  "Boston",
-  "Los Angeles",
-  "San Francisco",
-  "Seattle",
-  "Miami",
-  "Denver",
-  "Houston",
-  "Atlanta",
-  "Philadelphia",
-  "Phoenix",
-  "Dallas",
-  "San Diego",
-  "Portland",
-]
-
 // Validate date format MM/DD/YYYY
 function isValidDateFormat(date: string): boolean {
   const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/
@@ -91,23 +72,6 @@ export async function POST(request: NextRequest) {
           error: {
             code: "INVALID_CITY",
             message: "City name is required and must be a string",
-            details: {
-              parameter: "city",
-              value: city,
-            },
-          },
-        },
-        { status: 400 }
-      )
-    }
-
-    // Check if city is in the valid list (case-insensitive)
-    if (!VALID_CITIES.some((validCity) => validCity.toLowerCase() === city.toLowerCase())) {
-      return NextResponse.json(
-        {
-          error: {
-            code: "INVALID_CITY",
-            message: `City "${city}" is not supported. Supported cities: ${VALID_CITIES.join(", ")}`,
             details: {
               parameter: "city",
               value: city,
